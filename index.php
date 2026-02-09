@@ -1,19 +1,12 @@
 <?php
 declare(strict_types=1);
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start(); 
 
 require_once 'flight/Flight.php';
 
-// Connexion MySQL locale
-$link = mysqli_connect('localhost', 'root', 'root', 'geobase');
-if (!$link) {
-    die('Erreur de connexion MySQL : ' . mysqli_connect_error());
-}
+// Connexion sql en local
+$link = mysqli_connect('u2.ensg.eu', 'geo', '', 'geobase');
 
 mysqli_set_charset($link, "utf8");
 Flight::set('geobase', $link);
@@ -31,10 +24,10 @@ Flight::route('/villes', function () {
     $link = Flight::get('geobase');
 
     $recherche = $_GET['recherche'];
-
-    $sql = 'SELECT nom, insee FROM communes WHERE nom LIKE "pa%"';
-    $requete = mysqli_query($link, $sql);
     $villes = [];
+
+    $sql = "SELECT nom, insee FROM communes WHERE nom LIKE '$recherche%' LIMIT 5";
+    $requete = mysqli_query($link, $sql);
     foreach ($requete as $ville) {
         $villes[] = $ville;
     }

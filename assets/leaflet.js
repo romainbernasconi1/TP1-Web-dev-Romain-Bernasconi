@@ -25,13 +25,13 @@ function onMapClick(e) {
         .openOn(map);
 }
 
-var marker = null;
+var markers = L.geoJSON().addTo(map);
 
 Vue.createApp({
   data() {
     return {
         recherche: '',
-        villes: [],
+        villes: []
     };
   },
 
@@ -46,21 +46,18 @@ Vue.createApp({
     geocode() {
         fetch(this.urlrecherche)
         .then(res => res.json())
-        .then(data => {
-            let lon = data.features[0].geometry.coordinates[0];
-            let lat = data.features[0].geometry.coordinates[1];
-            let nom = data.features[0].properties.label;
-            if (marker) {
-                map.removeLayer(marker);
-            }
-            marker = L.marker([lat, lon]).addTo(map);
-            marker.bindPopup(nom).openPopup();
-            map.setView([lat, lon], 12);
+        .then(donnees => {
+        markers.clearLayers();
+        markers.addData(donnees);
+
+        let bounds = markers.getBounds();
+        map.fitBounds(bounds);
         });
     },
 
     autocomplete() {
         let url = '/villes?recherche=' + this.recherche;
+        console.log(url);
         fetch(url)
         .then(res => res.json())
         .then(donnees => {

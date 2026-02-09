@@ -13,8 +13,8 @@
 <body>
 <div id="entete">
     <form @submit.prevent="geocode">
-        <input v-model="recherche" name="adresse">
-        <input @input="autocomplete" type="submit" value="rechercher">   
+        <input @input="autocomplete" v-model="recherche" name="adresse">
+        <input type="submit" value="rechercher">   
     </form>
 
     <ul v-if="villes.length">

@@ -9,3 +9,19 @@ body {
     min-height: 100hv;
     grid-template-rows: 100px 1fr;
 }
+
+#villes {
+    position: absolute;
+    top: 100px;
+    left: 0; right: 0;
+    z-index: 5000;
+    padding: 0;
+    background: lightblue;
+}
+#villes li {
+    padding: 10px;
+    list-style-type: none;
+}
+#villes li:hover {
+    background: white;
+}

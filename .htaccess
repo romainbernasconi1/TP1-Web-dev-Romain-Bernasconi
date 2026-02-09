@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /core-master/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
