@@ -27,11 +27,13 @@ function onMapClick(e) {
 
 var markers = L.geoJSON().addTo(map);
 
+let geomCommune = L.geoJSON().addTo(map);
+
 Vue.createApp({
   data() {
     return {
         recherche: '',
-        villes: []
+        villes: [],
     };
   },
 
@@ -63,7 +65,24 @@ Vue.createApp({
         .then(donnees => {
             this.villes = donnees;
         });
-    }
+    },
+
+    recupGeometrie(ville) {
+        this.ville = [];
+        let url = '/ville?insee=' + ville.insee;
+        console.log(url);
+        fetch(url)
+        .then(res => res.json())
+        .then(donnees => {
+            console.log(donnees)
+            this.villes = donnees;
+            geomCommune.clearLayers();
+            geomCommune.appData(donnees);
+
+        let bounds = markers.getBounds();
+        map.fitBounds(bounds);
+    });
   },
+},
 
 }).mount('#entete');

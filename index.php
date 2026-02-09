@@ -5,7 +5,7 @@ session_start();
 
 require_once 'flight/Flight.php';
 
-// Connexion sql en local
+// Connexion serveur sql
 $link = mysqli_connect('u2.ensg.eu', 'geo', '', 'geobase');
 
 mysqli_set_charset($link, "utf8");
@@ -26,12 +26,35 @@ Flight::route('/villes', function () {
     $recherche = $_GET['recherche'];
     $villes = [];
 
-    $sql = "SELECT nom, insee FROM communes WHERE nom LIKE '$recherche%' LIMIT 5";
+    $sql = "SELECT nom, insee 
+            FROM communes 
+            WHERE nom 
+            LIKE '$recherche%' 
+            LIMIT 5";
     $requete = mysqli_query($link, $sql);
     foreach ($requete as $ville) {
         $villes[] = $ville;
     }
     Flight::json($villes);
+});
+
+// Ville
+Flight::route('/ville', function () {
+    $link = Flight::get('geobase');
+    $ville = [];
+
+    $insee = $_GET['insee'];
+    $sql = "SELECT st_asgeojson(geometry) AS geom 
+            FROM communes 
+            WHERE insee = '$insee'";
+    $requete = mysqli_query($link, $sql);
+    // récupère le résultat
+    $ville = mysqli_fetch_assoc($requete);
+    $ville = json_decode($ville['geom']);
+
+    ini_set('serialize_prcision', '-1');
+    
+    Flight::json($ville);
 });
 
 // Lefleat

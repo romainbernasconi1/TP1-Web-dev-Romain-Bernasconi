@@ -18,8 +18,8 @@
     </form>
 
     <ul id="villes" v-if="villes.length">
-        <li v-for="ville in villes">
-            {{ ville.nom }}
+        <li v-for="ville in villes" @click="recupGeometrie(ville.insee)">
+            {{ ville.nom }} - {{ ville.insee }}
         </li>
     </ul>
 </div>
