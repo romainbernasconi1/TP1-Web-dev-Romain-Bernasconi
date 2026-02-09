@@ -17,7 +17,7 @@
         <input type="submit" value="rechercher">   
     </form>
 
-    <ul v-if="villes.length">
+    <ul id="villes" v-if="villes.length">
         <li v-for="ville in villes">
             {{ ville.nom }}
         </li>
