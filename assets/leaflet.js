@@ -69,7 +69,7 @@ Vue.createApp({
 
     recupGeometrie(ville) {
         this.ville = [];
-        let url = '/ville?insee=' + ville.insee;
+        let url = '/ville?insee=' + ville;
         console.log(url);
         fetch(url)
         .then(res => res.json())
@@ -77,9 +77,9 @@ Vue.createApp({
             console.log(donnees)
             this.villes = donnees;
             geomCommune.clearLayers();
-            geomCommune.appData(donnees);
+            geomCommune.addData(donnees);
 
-        let bounds = markers.getBounds();
+        let bounds = geomCommune.getBounds();
         map.fitBounds(bounds);
     });
   },
